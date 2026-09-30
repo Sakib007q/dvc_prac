@@ -1,0 +1,8 @@
+stages:
+  s1_preprocessing:
+    cmd: .\myenv\Scripts\python.exe pipeline/1_preprocessing.py
+    deps:
+      - pipeline/1_preprocessing.py
+      - data/raw/BigBasket Products.csv
+    outs:
+      - outputs/preprocessing

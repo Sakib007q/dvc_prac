@@ -1,0 +1,91 @@
+schema: '2.0'
+stages:
+  s1_preprocessing:
+    cmd: .\myenv\Scripts\python.exe pipeline/1_preprocessing.py
+    deps:
+    - path: data/raw/BigBasket Products.csv
+      hash: md5
+      md5: 1e3e9c298fe8b85ba1eea5c66b3bb6a5
+      size: 16739247
+    - path: pipeline/1_preprocessing.py
+      hash: md5
+      md5: 90da99eb361fc7e0ba0ec082327c1c1f
+      size: 4708
+    outs:
+    - path: outputs/preprocessing
+      hash: md5
+      md5: 125d95f99d3e3adce69ac6cabfa8b5d2.dir
+      size: 2653882
+      nfiles: 2
+  s2_eda:
+    cmd: .\myenv\Scripts\python.exe pipeline/2_eda.py
+    deps:
+    - path: outputs/preprocessing/preprocessed_data.csv
+      hash: md5
+      md5: 96a4c0de3f477462c0b43bf73ac95757
+      size: 2652233
+    - path: pipeline/2_eda.py
+      hash: md5
+      md5: 504eef13121cc005cbc0f4991c6922e6
+      size: 4439
+    outs:
+    - path: outputs/eda
+      hash: md5
+      md5: 796c75319e6618cb8486917fc6690983.dir
+      size: 434726
+      nfiles: 5
+  s3_encoding:
+    cmd: .\myenv\Scripts\python.exe pipeline/3_encoding.py
+    deps:
+    - path: outputs/preprocessing/preprocessed_data.csv
+      hash: md5
+      md5: 96a4c0de3f477462c0b43bf73ac95757
+      size: 2652233
+    - path: pipeline/3_encoding.py
+      hash: md5
+      md5: 325d327e520d291050177d894dd7712d
+      size: 4703
+    outs:
+    - path: outputs/encoding
+      hash: md5
+      md5: e5ba6ddcd1282ec4819f9804bc0da10b.dir
+      size: 3037922
+      nfiles: 5
+  s4_model_building:
+    cmd: .\myenv\Scripts\python.exe pipeline/4_model_building.py
+    deps:
+    - path: outputs/encoding/test.csv
+      hash: md5
+      md5: c14372e919b6f07f0cf62ce30523bfee
+      size: 607354
+    - path: outputs/encoding/train.csv
+      hash: md5
+      md5: ca054ff619c2d99058661a3113d14488
+      size: 2427899
+    - path: pipeline/4_model_building.py
+      hash: md5
+      md5: c9932c66a2b6ba4b7ab2145cc4f39f65
+      size: 3941
+    outs:
+    - path: outputs/model_building
+      hash: md5
+      md5: dc72ecd61744191f12789048b89e63bb.dir
+      size: 116520005
+      nfiles: 8
+  s5_model_evaluation:
+    cmd: .\myenv\Scripts\python.exe pipeline/5_model_evaluation.py
+    deps:
+    - path: outputs/model_building/predictions.csv
+      hash: md5
+      md5: fdc66afbb003f7bc0632c6e13f49dfcd
+      size: 477240
+    - path: pipeline/5_model_evaluation.py
+      hash: md5
+      md5: e269900db1c0403a353933b2f94cd022
+      size: 6204
+    outs:
+    - path: outputs/model_evaluation
+      hash: md5
+      md5: 762b20c3fd92e100ad4df84e208d45b0.dir
+      size: 183335
+      nfiles: 5
